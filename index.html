@@ -77,7 +77,18 @@
             font-size: 1em;
             transition: border-color 0.2s, background 0.2s;
         }
-        textarea:focus {
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #444;
+            border-radius: 7px;
+            box-sizing: border-box;
+            background: #23272f;
+            color: #f3f3f3;
+            font-size: 1em;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        textarea:focus, input[type="text"]:focus, input[type="number"]:focus {
             border-color: #ffb347;
             outline: none;
             background: #23272f;
@@ -138,6 +149,18 @@
     </p>
     
     <form id="interview-form">
+        <div class="question-block">
+            <h3>Datos del participante</h3>
+            <div>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div style="margin-top: 15px;">
+                <label for="edad">Edad:</label>
+                <input type="number" id="edad" name="edad" required>
+            </div>
+        </div>
+
         <hr>
 
         <h2>1. Sobre el marco legal y ético</h2>
@@ -236,6 +259,7 @@
 
     <div class="footer">
         <p>Gracias por participar en esta entrevista. Tu colaboración es muy valiosa.</p>
+    </div>
 </div>
 
 <script>
@@ -245,7 +269,8 @@ document.getElementById('interview-form').addEventListener('submit', function(ev
     const form = event.target;
     const data = new FormData(form);
 
-    const scriptUrl = "https://script.google.com/macros/s/AKfycbzPRh3wooX2hzhgWuUMIPLpylL9UCOVg3DBvRcoJc4zYyGs3Bg7KU8f_KFtseSY_nkcBQ/exec"; // Reemplaza esto con la URL de tu script
+    // Reemplaza esto con la URL de tu script de Google Apps
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbzKYGSSJ0ZG3Mx7qr2tWwAM9bvw1kyuDq2ZkAQMJXilmkQpbwnEcSLgYSCjmQjU7cZVQg/exec"; 
 
     fetch(scriptUrl, {
         method: 'POST',
@@ -253,14 +278,10 @@ document.getElementById('interview-form').addEventListener('submit', function(ev
         mode: 'no-cors'
     })
     .then(response => {
-        // La respuesta del script es 'Éxito', pero en modo 'no-cors' no se puede leer.
-        // Asumimos que si no hay error en la red, el envío fue exitoso.
         console.log('Formulario enviado');
         
-        // Muestra el mensaje de confirmación
         document.getElementById('confirmation-message').style.display = 'block';
 
-        // Opcional: limpia el formulario
         form.reset();
     })
     .catch(error => {
